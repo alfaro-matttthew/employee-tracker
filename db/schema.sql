@@ -16,7 +16,8 @@ CREATE TABLE role (
   FOREIGN KEY (department_id)
   REFERENCES department(id)
   ON DELETE SET NULL
-) AUTO_INCREMENT = 10 AUTO_INCREMENT = 10;
+) --The first AUTO_INCREMENT defines the starting numnber, the second defines what number it will be counting by 
+AUTO_INCREMENT = 10 AUTO_INCREMENT = 10;
 
 CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -29,5 +30,6 @@ CREATE TABLE employee (
   ON DELETE SET NULL,
   FOREIGN KEY (manager_id)
   REFERENCES employee(id)
-  ON DELETE SET NULL,
-) AUTO_INCREMENT = 100 AUTO_INCREMENT = 100;
+  ON DELETE SET NULL
+) --The first AUTO_INCREMENT defines the starting numnber, the second defines what number it will be counting by  
+AUTO_INCREMENT = 100 AUTO_INCREMENT = 100;
