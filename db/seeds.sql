@@ -17,10 +17,15 @@ VALUES ("Software Engineer", 45000),
        ("Sales Lead", 100000);
 
        INSERT INTO employee (first_name, last_name)
-VALUES ("Intro to JavaScript", 1),
-       ("Data Science", 2),
-       ("Linear Algebra", 3),
-       ("History of the Internet", 4),
-       ("Machine Learning", 4),
-       ("Game Design", 1 ),
-       ("Cloud Development", 1);
+VALUES  ("John", "Doe"),
+        ("Eric", "Graves"),
+        ("Mike", "Chan"),
+        ("Ashely", "Rodriguez"),
+        ("Brittani", "Court"),
+        ("Kevin", "Tupik"),
+        ("Kunal", "Singh"),
+        ("Barabara", "Spencer"),
+        ("Malia", "Brown"),
+        ("Sarah", "Lourd"),
+        ("Tom", "Allen"),
+        ("John", "Dinsmore");
