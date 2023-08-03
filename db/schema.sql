@@ -1,0 +1,30 @@
+DROP DATABASE IF EXISTS employeeTracker_db;
+CREATE DATABASE employeeTracker_db;
+
+USE employeeTracker_db;
+
+CREATE TABLE department (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE role (
+  id INT NOT NULL AUTO_INCREMENT = 10 PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  salary INT,
+  FOREIGN KEY (department)
+  REFERENCES department(id)
+  ON DELETE SET NULL
+) INCREMENT = 10;
+
+CREATE TABLE employee (
+  id INT NOT NULL AUTO_INCREMENT = 100 PRIMARY KEY,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  FOREIGN KEY (role_id)
+  REFERENCES role(id)
+  ON DELETE SET NULL,
+  FOREIGN KEY (manager_id)
+  REFERENCES employee(id)
+  ON DELETE SET NULL,
+);
