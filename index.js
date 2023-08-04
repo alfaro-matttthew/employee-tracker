@@ -1,12 +1,20 @@
 const express = require("express");
 const db = require("./db/connections");
 const inquirer = require("inquirer");
+const mysql = require("mysql2");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+const database = mysql.createConnection({
+  host: "localhost",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
 
 db.connect((err) => {
   if (err) {
@@ -32,35 +40,47 @@ menu = [
       "Add a Role",
       "Add an Employee",
       "Update an Employee Role",
+      "Exit",
     ],
   },
 ];
+function init() {
+  inquirer.prompt(menu).then((answers) => {
+    console.log("User selected:", answers.mainScreen);
+    let response = answers.mainScreen;
+    if (response == "View all Employees") {
+      console.log("View all Employees");
+    } else if (response == "View all Departments") {
+      console.log("View all Departments");
+      database.query(`SELECT * FROM departments`, function (err, results) {
+        if (err) {
+          console.error("error fetching data from database:", err.message);
+          return;
+        }
+        console.table(results); // Display the data as a table
+      });
+      console;
+      restart();
+    } else if (response == "View all Roles") {
+      console.log("View all Roles");
+    } else if (response == "View all Employees") {
+      console.log("View all Employees");
+    } else if (response == "Add a Department") {
+      console.log("Add a Department");
+    } else if (response == "Add a Role") {
+      console.log("Add a Role");
+    } else if (response == "Add an Employee") {
+      console.log("Add an Employee");
+    } else if (response == "Update an Employee Role") {
+      console.log("Update an Employee Role");
+    } else {
+      console.log("Exit");
+    }
+  });
+}
 
-inquirer.prompt(menu).then((answers) => {
-  console.log("User selected:", answers.mainScreen);
-  let response = answers.mainScreen;
-  if (response == "View all Employees") {
-    console.log("View all Employees");
-  }
-  else if (response == "View all Departments") {
-    console.log("View all Departments");
-  }
-  else if (response == "View all Roles") {
-    console.log("View all Roles");
-  }
-  else if (response == "View all Employees") {
-    console.log("View all Employees");
-  }
-  else if (response == "Add a Department") {
-    console.log("Add a Department");
-  }
-  else if (response == "Add a Role") {
-    console.log("Add a Role");
-  }
-  else if (response == "Add an Employee") {
-    console.log("Add an Employee");
-  }
-  else {
-    console.log("Update an Employee Role");
-  }
-});
+function restart() {
+  init();
+}
+
+init();
