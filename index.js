@@ -16,6 +16,8 @@ const database = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
+// database.query()
+
 db.connect((err) => {
   if (err) {
     console.error("error connecting to the database:", err.message);
@@ -44,42 +46,106 @@ menu = [
     ],
   },
 ];
+
+addEmployeeQuestions = [
+  {
+    type: 'input',
+    name: 'fname',
+    message: 'Enter their First Name:',
+  },
+  {
+    type: 'input',
+    name: 'lname',
+    message: 'Enter their Last Name:',
+  },
+  {
+    type: 'list',
+    name: 'role',
+    message: 'What is their job role?',
+    choice: ['Software Engineer', 'Lead Engineer', 'CEO', 'Accountant', 'Account Manager', 'Lawyer', 'Legal Team Lead', 'Salesperson', 'Sales Lead'],
+  },
+  {
+    type: 'confirm',
+    name: 'managerConfirm',
+    message: 'Does this person have a manager?',
+  },
+  {
+    type: 'list',
+    name: 'manager',
+    message: 'What is their job role?',
+    choice: ['Software Engineer', 'Lead Engineer', 'CEO', 'Accountant', 'Account Manager', 'Lawyer', 'Legal Team Lead', 'Salesperson', 'Sales Lead'],
+  }
+]
+
 function init() {
   inquirer.prompt(menu).then((answers) => {
     console.log("User selected:", answers.mainScreen);
     let response = answers.mainScreen;
-    if (response == "View all Employees") {
-      console.log("View all Employees");
-    } else if (response == "View all Departments") {
+    ///////////////////////////////////////////////////////////////////////
+    if (response == "View all Departments") {
       console.log("View all Departments");
-      database.query(`SELECT * FROM departments`, function (err, results) {
+      database.query("SELECT * FROM department", function (err, results) {
+        console.log("This Works");
         if (err) {
           console.error("error fetching data from database:", err.message);
           return;
         }
         console.table(results); // Display the data as a table
       });
-      console;
       restart();
-    } else if (response == "View all Roles") {
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else if (response == "View all Roles") {
       console.log("View all Roles");
-    } else if (response == "View all Employees") {
+      database.query("SELECT * FROM role", function (err, results) {
+        console.log("This Works");
+        if (err) {
+          console.error("error fetching data from database:", err.message);
+          return;
+        }
+        console.table(results); // Display the data as a table
+      });
+      restart();
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else if (response == "View all Employees") {
       console.log("View all Employees");
-    } else if (response == "Add a Department") {
+      database.query("SELECT * FROM employee", function (err, results) {
+        console.log("This Works");
+        if (err) {
+          console.error("error fetching data from database:", err.message);
+          return;
+        }
+        console.table(results); // Display the data as a table
+      });
+      restart();
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else if (response == "Add a Department") {
       console.log("Add a Department");
-    } else if (response == "Add a Role") {
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else if (response == "Add a Role") {
       console.log("Add a Role");
-    } else if (response == "Add an Employee") {
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else if (response == "Add an Employee") {
       console.log("Add an Employee");
-    } else if (response == "Update an Employee Role") {
+      inquirer.prompt(addEmployeeQuestions).then((answers) => {
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else if (response == "Update an Employee Role") {
       console.log("Update an Employee Role");
-    } else {
+    }
+    ///////////////////////////////////////////////////////////////////////
+    else {
       console.log("Exit");
     }
   });
 }
 
 function restart() {
+  console.log("Left");
   init();
 }
 
