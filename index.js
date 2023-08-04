@@ -49,33 +49,32 @@ menu = [
 
 addEmployeeQuestions = [
   {
-    type: 'input',
-    name: 'fname',
-    message: 'Enter their First Name:',
+    type: "input",
+    name: "fname",
+    message: "Enter their First Name:",
   },
   {
-    type: 'input',
-    name: 'lname',
-    message: 'Enter their Last Name:',
+    type: "input",
+    name: "lname",
+    message: "Enter their Last Name:",
   },
   {
-    type: 'list',
-    name: 'role',
-    message: 'What is their job role?',
-    choice: ['Software Engineer', 'Lead Engineer', 'CEO', 'Accountant', 'Account Manager', 'Lawyer', 'Legal Team Lead', 'Salesperson', 'Sales Lead'],
+    type: "list",
+    name: "role",
+    message: "What is their job role?",
+    choices: [
+      "Software Engineer",
+      "Lead Engineer",
+      "CEO",
+      "Accountant",
+      "Account Manager",
+      "Lawyer",
+      "Legal Team Lead",
+      "Salesperson",
+      "Sales Lead",
+    ],
   },
-  {
-    type: 'confirm',
-    name: 'managerConfirm',
-    message: 'Does this person have a manager?',
-  },
-  {
-    type: 'list',
-    name: 'manager',
-    message: 'What is their job role?',
-    choice: ['Software Engineer', 'Lead Engineer', 'CEO', 'Accountant', 'Account Manager', 'Lawyer', 'Legal Team Lead', 'Salesperson', 'Sales Lead'],
-  }
-]
+];
 
 function init() {
   inquirer.prompt(menu).then((answers) => {
@@ -84,13 +83,15 @@ function init() {
     ///////////////////////////////////////////////////////////////////////
     if (response == "View all Departments") {
       console.log("View all Departments");
+
       database.query("SELECT * FROM department", function (err, results) {
         console.log("This Works");
+
         if (err) {
           console.error("error fetching data from database:", err.message);
           return;
         }
-        console.table(results); // Display the data as a table
+        console.table(results);
       });
       restart();
     }
@@ -128,10 +129,50 @@ function init() {
     else if (response == "Add a Role") {
       console.log("Add a Role");
     }
-    ///////////////////////////////////////////////////////////////////////
+    ///// ADD AN EMPLOYEE ///////////////////////////////////////////////////
     else if (response == "Add an Employee") {
       console.log("Add an Employee");
+
       inquirer.prompt(addEmployeeQuestions).then((answers) => {
+        console.log(answers);
+
+        // Find the Manager
+        let role = answers.role;
+
+        if (
+          role !== "Software Engineer" &&
+          role !== "Accountant" &&
+          role !== "Lawyer" &&
+          role !== "Salesperson"
+        ) {
+          console.log("This person is a manager!");
+        }
+        
+        else {
+          let manager = null;
+          console.log("This person is an employee!");
+
+          if (role == "Software Engineer") {
+            manager = 1004;
+          } else if (role == "Accountant") {
+            manager = 1007;
+          } else if (role == "Lawyer") {
+            manager = 1010;
+          } else {
+            manager = 1001;
+          }
+          console.log(`${manager} is the manager.`);
+        };
+      });
+      // Insert into the Database
+      database.query("SELECT * FROM employee", function (err, results) {
+        console.log("This Works");
+        if (err) {
+          console.error("error fetching data from database:", err.message);
+          return;
+        }
+        console.table(results); // Display the data as a table
+      });
     }
     ///////////////////////////////////////////////////////////////////////
     else if (response == "Update an Employee Role") {
